@@ -1,0 +1,22 @@
+- name: github key scan
+  become_user: vagrant
+  shell: ssh-keygen -R github.com
+  ignore_errors: True
+
+- name: github key scan
+  become_user: vagrant
+  shell: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
+- name: clone devenv repo
+  become_user: vagrant
+  git:
+    repo: https://github.com/xande0812/devenv.git
+    dest: ~/devenv
+
+- name: link to xdg config dir
+  become_user: vagrant
+  file:
+    src: ~/devenv/config
+    dest: ~/.config
+    state: link
+

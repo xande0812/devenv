@@ -1,0 +1,10 @@
+- name: clone fzf
+  become_user: vagrant
+  git:
+    repo: https://github.com/junegunn/fzf.git
+    dest: ~/.fzf
+    depth: 1
+
+- name: install fzf
+  become_user: vagrant
+  command: ~/.fzf/install
