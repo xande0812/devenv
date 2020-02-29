@@ -8,7 +8,7 @@
 
 - name: check nodejs plugin
   become_user: vagrant
-  shell: asdf plugin list all | grep -q nodejs
+  shell: asdf plugin list | grep -q nodejs
   register: nodejs_installed
   failed_when: nodejs_installed.rc not in [0, 1]
 
