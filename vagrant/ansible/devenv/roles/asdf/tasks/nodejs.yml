@@ -1,0 +1,33 @@
+- name: install dependencies to nodejs plugin
+  become: yes
+  apt:
+    pkg:
+      - dirmngr
+      - gpg
+    update_cache: yes
+
+- name: check nodejs plugin
+  become_user: vagrant
+  shell: asdf plugin list all | grep -q nodejs
+  register: nodejs_installed
+  failed_when: nodejs_installed.rc not in [0, 1]
+
+- name: add plugin
+  become_user: vagrant
+  shell: asdf plugin add nodejs
+  when: nodejs_installed.rc == 1
+
+- name: import gpg key
+  become_user: vagrant
+  shell: bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+  when: nodejs_installed.rc == 1
+
+- name: install nodejs
+  become_user: vagrant
+  shell: asdf install nodejs "{{ item }}"
+  with_items:
+    - 13.9.0
+
+- name: set global nodejs
+  become_user: vagrant
+  shell: asdf global nodejs 13.9.0

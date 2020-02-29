@@ -15,3 +15,5 @@
       - unzip
       - curl
     update_cache: yes
+
+- include: nodejs.yml
