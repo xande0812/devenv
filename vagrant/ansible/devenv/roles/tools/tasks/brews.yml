@@ -1,0 +1,14 @@
+- name: install brew
+  args:
+    executable: /usr/bin/fish -l
+  become_user: vagrant
+  homebrew:
+    update_homebrew: yes
+    state: present
+    name:
+      - fzf
+      - tig
+      - exa
+      - fd
+      - ripgrep
+      - neovim

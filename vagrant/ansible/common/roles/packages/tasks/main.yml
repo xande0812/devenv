@@ -1,0 +1,52 @@
+- name: apt update
+  become: yes
+  apt:
+    update_cache: 'yes'
+    upgrade: 'yes'
+
+- name: add apt repos
+  become: yes
+  apt_repository:
+    repo: '{{ item }}'
+  with_items:
+    - 'ppa:fish-shell/release-3'
+    - 'ppa:git-core/ppa'
+    - 'ppa:neovim-ppa/stable'
+
+- name: install packages
+  become: yes
+  apt:
+    pkg:
+      - fish
+      - git
+      - build-essential
+      - curl
+      - file
+      - build-essential
+    update_cache: yes
+
+- name: upgrade all
+  become: yes
+  apt:
+    upgrade: 'yes'
+
+- name: check if linuxbrew is installed
+  become_user: vagrant
+  command: which brew
+  register: brew_installed
+  failed_when: brew_installed.rc not in [0, 1]
+
+- name: fetch install script
+  become_user: vagrant
+  uri:
+    url: https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh
+    return_content: yes
+  register: linuxbrew_script
+  when: brew_installed.rc == 1
+
+- name: install linuxbrew
+  become_user: vagrant
+  shell: '{{ linuxbrew_script.content }}'
+  environment:
+    CI: 1
+  when: brew_installed.rc == 1

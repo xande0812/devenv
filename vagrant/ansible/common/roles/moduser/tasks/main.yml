@@ -1,4 +1,5 @@
 - name: setup vagrant user
+  become: yes
   user:
     name: vagrant
     shell: /usr/bin/fish
