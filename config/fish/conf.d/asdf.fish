@@ -1,1 +1,1 @@
-source "(brew --prefix asdf)"/asdf.fish
+source /home/linuxbrew/.linuxbrew/opt/asdf/asdf.fish
