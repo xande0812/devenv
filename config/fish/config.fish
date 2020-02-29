@@ -6,3 +6,10 @@ end
 
 # Theme prompt
 set -g theme_display_hostname no
+
+# cd して ls する
+functions --copy cd standard_cd
+
+function cd
+  standard_cd $argv; and ls
+end
