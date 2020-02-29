@@ -11,3 +11,4 @@
       - fd
       - ripgrep
       - neovim
+      - ghq
