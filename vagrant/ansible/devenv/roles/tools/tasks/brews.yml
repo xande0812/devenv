@@ -1,9 +1,8 @@
 - name: install brew
-  args:
-    executable: /usr/bin/fish -l
   become_user: vagrant
   homebrew:
     update_homebrew: yes
+    path: /home/linuxbrew/.linuxbrew/bin
     state: present
     name:
       - fzf
