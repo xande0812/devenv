@@ -8,6 +8,7 @@ let g:airline_powerline_fonts            = 1
 let g:airline_theme                      = 'molokai'
 
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
