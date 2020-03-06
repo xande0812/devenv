@@ -1,0 +1,11 @@
+- name: install dependencies to nodejs plugin
+  become: yes
+  apt:
+    pkg:
+      - xsel
+    update_cache: yes
+
+- name: install tpm
+  git:
+    repo: git@github.com:tmux-plugins/tpm.git
+    dest: ~/.tmux/plugins/tpm

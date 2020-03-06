@@ -20,3 +20,10 @@
     dest: ~/.config
     state: link
 
+- name: link to tmux config
+  become_user: vagrant
+  file:
+    src: ~/devenv/tmux.conf
+    dest: ~/.tmux.conf
+    state: link
+

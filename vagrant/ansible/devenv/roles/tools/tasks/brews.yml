@@ -13,3 +13,4 @@
       - neovim
       - ghq
       - asdf
+      - tmux
