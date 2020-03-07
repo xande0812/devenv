@@ -16,5 +16,6 @@
       - curl
     update_cache: yes
 
+- include: python.yml
 - include: nodejs.yml
 - include: golang.yml
