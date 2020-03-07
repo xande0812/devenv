@@ -1,0 +1,6 @@
+- name: install dependencies
+  npm:
+    name: yarn
+    global: yes
+
+- include: golang.yml
