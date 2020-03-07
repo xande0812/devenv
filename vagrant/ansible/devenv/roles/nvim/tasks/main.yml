@@ -1,6 +1,11 @@
-- name: test
-  debug:
-    msg: "{{ ansible_env.XDG_DATA_HOME }}"
+- name: install python module
+  pip:
+    name: neovim
+
+- name: install node module
+  npm:
+    name: neovim
+    global: yes
 
 - name: is installed plug
   become_user: vagrant
