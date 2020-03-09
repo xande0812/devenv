@@ -12,6 +12,10 @@ let g:gruvbox_contrast_dark = 'hard'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
+Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'ryanoasis/vim-devicons'
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+nnoremap <silent><C-e> :NERDTreeToggle<CR>
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
