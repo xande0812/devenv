@@ -1,12 +1,16 @@
 {
+  "coc.preferences.formatOnSaveFiletypes": ["go"],
   "tsserver.npm": "/home/vagrant/.asdf/shims/npm",
   "languageserver": {
     "golang": {
       "command": "gopls",
-      "args": ["serve", "-debug", "0.0.0.0:8484", "-rpc.trace"],
-      "rootPatterns": ["go.mod"],
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "disableWorkspaceFolders": true,
-      "filetypes": ["go"]
+      "filetypes": ["go"],
+      "settings": {
+        "completeUnimported": true,
+        "usePlaceholders": true
+      }
     }
   }
 }
