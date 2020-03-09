@@ -20,6 +20,7 @@ nnoremap <silent><C-e> :NERDTreeToggle<CR>
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'josa42/coc-go', {'do': 'yarn install --frozen-lockfile'}
 autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
 call plug#end()
