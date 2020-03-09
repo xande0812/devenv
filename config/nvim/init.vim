@@ -9,6 +9,7 @@ let g:airline_theme                      = 'molokai'
 
 Plug 'morhetz/gruvbox'
 let g:gruvbox_contrast_dark = 'hard'
+
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
@@ -16,6 +17,8 @@ Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'ryanoasis/vim-devicons'
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
 nnoremap <silent><C-e> :NERDTreeToggle<CR>
+
+Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
@@ -31,6 +34,10 @@ set encoding=UTF-8
 set list
 set listchars=tab:>.,trail:_,eol:↲,extends:>,precedes:<,nbsp:%
 set relativenumber
+set tabstop=4
+set expandtab
+set shiftwidth=4
+set softtabstop=4
 
 " coc用の設定
 set hidden
