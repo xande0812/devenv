@@ -7,6 +7,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts            = 1
 let g:airline_theme                      = 'molokai'
 
+Plug 'morhetz/gruvbox'
+let g:gruvbox_contrast_dark = 'hard'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
@@ -17,6 +19,11 @@ call plug#end()
 
 let mapleader=";"
 inoremap <silent> jj <ESC>
+set termguicolors
+syntax enable
+set background=dark
+colorscheme gruvbox
+set encoding=UTF-8
 set list
 set listchars=tab:>.,trail:_,eol:↲,extends:>,precedes:<,nbsp:%
 set relativenumber
