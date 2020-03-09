@@ -41,6 +41,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "docker", type: "docker"
+  config.vm.provision "docker_compose", type: "docker_compose"
 
   config.vm.provision "devenv", type: "ansible" do |devenv|
     devenv.playbook = "./ansible/devenv/playbook.yml"
