@@ -15,3 +15,5 @@
       - asdf
       - tmux
       - jq
+      - ripgrep
+      - fd
