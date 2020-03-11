@@ -5,6 +5,7 @@ config/fish/conf.d/z.fish
 config/fisher
 config/anyenv
 config/configstore/update-notifier-npm.json
+config/jesseduffield/lazygit/state.yml
 
 config/coc/*
 
