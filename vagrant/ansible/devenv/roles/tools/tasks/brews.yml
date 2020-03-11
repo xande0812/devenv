@@ -17,3 +17,4 @@
       - jq
       - ripgrep
       - fd
+      - lazygit
