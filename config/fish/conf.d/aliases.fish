@@ -5,3 +5,5 @@ alias k='kubectl'
 
 alias ls='exa -ahl --git'
 alias tree='exa -T --git-ignore'
+
+alias lg='lazygit'
