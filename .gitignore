@@ -9,8 +9,12 @@ config/jesseduffield/lazygit/state.yml
 
 config/coc/*
 
+config/configstore
+
 config/fish/conf.d/fzf.fish
 config/fish/conf.d/fzf_key_bindings.fish
+
+config/gatsby
 
 .vagrant
 *.log
