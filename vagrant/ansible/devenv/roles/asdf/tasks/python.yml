@@ -16,6 +16,6 @@
     - 3.8.2
     - 2.7.17
 
-- name: set python  golang
+- name: set python global
   become_user: vagrant
-  shell: asdf global python 3.8.2
+  shell: asdf global python 3.8.2 2.7.17
