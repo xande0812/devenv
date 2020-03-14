@@ -1,8 +1,10 @@
 - name: install python module
+  become_user: vagrant
   pip:
     name: neovim
 
 - name: install node module
+  become_user: vagrant
   npm:
     name: neovim
     global: yes
