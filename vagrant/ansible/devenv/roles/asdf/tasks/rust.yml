@@ -1,0 +1,20 @@
+- name: check rust plugin
+  become_user: vagrant
+  shell: asdf plugin list | grep -q rust
+  register: rust_installed
+  failed_when: rust_installed.rc not in [0, 1]
+
+- name: add plugin
+  become_user: vagrant
+  shell: asdf plugin add rust
+  when: rust_installed.rc == 1
+
+- name: install rust
+  become_user: vagrant
+  shell: asdf install rust "{{ item }}"
+  with_items:
+    - 1.42.0
+
+- name: set global rust
+  become_user: vagrant
+  shell: asdf global rust 1.42.0

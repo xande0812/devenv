@@ -19,3 +19,4 @@
 - include: python.yml
 - include: nodejs.yml
 - include: golang.yml
+- include: rust.yml
