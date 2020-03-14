@@ -4,3 +4,4 @@
     global: yes
 
 - include: golang.yml
+- include: rust.yml

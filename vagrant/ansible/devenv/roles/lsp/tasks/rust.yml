@@ -1,0 +1,3 @@
+- name: install lsp
+  become_user: vagratn
+  shell: rustup component add rls rust-analysis rust-src
