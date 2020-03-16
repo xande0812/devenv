@@ -11,6 +11,11 @@
         "completeUnimported": true,
         "usePlaceholders": true
       }
+    },
+    "rust": {
+      "command": "rust-analyzer",
+      "filetypes": ["rust"],
+      "rootPatterns": ["Cargo.toml"]
     }
   }
 }
