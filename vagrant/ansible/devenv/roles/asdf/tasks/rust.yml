@@ -6,7 +6,7 @@
 
 - name: add plugin
   become_user: vagrant
-  shell: asdf plugin add rust
+  shell: asdf plugin add rust https://github.com/asdf-community/asdf-rust.git
   when: rust_installed.rc == 1
 
 - name: install rust
