@@ -1,7 +1,0 @@
-- name: install sdk
-  become: yes
-  apt:
-    name:
-      - google-cloud-sdk
-    update_cache: yes
-

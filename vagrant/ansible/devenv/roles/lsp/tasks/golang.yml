@@ -1,3 +1,0 @@
-- name: install lsp
-  become_user: vagratn
-  shell: go get golang.org/x/tools/gopls@latest
