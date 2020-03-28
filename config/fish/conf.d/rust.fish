@@ -1,1 +1,1 @@
-set -g fish_user_paths $HOME/.asdf/installs/rust/1.42.0/bin $fish_user_paths;
+set -g fish_user_paths $HOME/.cargo/bin $fish_user_paths;
