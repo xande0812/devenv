@@ -2,7 +2,7 @@
 Vagrant.configure("2") do |config|
   config.vm.box         = "ubuntu/bionic64"
   config.vm.box_version = "20200218.0.0"
-  config.disksize.size = '30GB'
+  config.disksize.size = '50GB'
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -37,14 +37,308 @@ Vagrant.configure("2") do |config|
     vb.memory = "2048"
   end
 
-  config.vm.provision "common", type: "ansible" do |common|
-    common.playbook = "./ansible/common/playbook.yml"
-  end
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    #!/bin/bash
+
+    echo "============================================================="
+    echo "リポジトリと各パッケージ更新"
+    echo "============================================================="
+    sudo apt-get update -y
+    sudo apt-get upgrade -y
+
+    echo "============================================================="
+    echo "locale設定"
+    echo "============================================================="
+    sudo apt-get install -y language-pack-ja-base language-pack-ja ibus-mozc
+    sudo timedatectl set-timezone Asia/Tokyo
+
+    echo "============================================================="
+    echo "fishインストール"
+    echo "============================================================="
+    sudo apt-add-repository ppa:fish-shell/release-3
+    sudo apt-get update -y
+    sudo apt-get install fish -y
+
+    echo "============================================================="
+    echo "fishをデフォルトシェルに変更"
+    echo "============================================================="
+    grep -q '/usr/bin/fish' /etc/shells || sudo echo "/usr/bin/fish" >> /etc/shells
+    sudo chsh -s /usr/bin/fish vagrant
+
+    echo "============================================================="
+    echo "githubをknown_hostsに加える"
+    echo "============================================================="
+    ssh-keygen -R github.com
+    ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+    chmod 644 ~/.ssh/known_hosts
+
+    echo "============================================================="
+    echo "linuxbrewをインストール"
+    echo "============================================================="
+    sudo apt-get install -y build-essential curl file
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+    echo "============================================================="
+    echo "configファイルをクローンしてリンクする"
+    echo "============================================================="
+    if [ ! -d ~/devenv ]; then
+      # ~/devenvがない
+      git clone https://github.com/xande0812/devenv.git ~/devenv
+    fi
+
+    if [ -d ~/.config ]; then
+      if [ -L ~/.config ]; then
+        # ~/.configがシンボリックリンク
+        unlink ~/.config
+      else
+        mv ~/.config ~/.config_$(date "+%Y%m%d-%H%M%S")
+      fi
+    fi
+    ln -s ~/devenv/config ~/.config
+
+    if [ -f ~/.tmux.conf ]; then
+      if [ -L ~/.tmux.conf ]; then
+        # ~/.tmux.confがシンボリックリンク
+        unlink ~/.tmux.conf
+      else
+        mv ~/.tmux.conf ~/.tmux.conf_$(date "+%Y%m%d-%H%M%S")
+      fi
+    fi
+    test -L ~/.tmux.conf || ln -s ~/devenv/tmux.conf ~/.tmux.conf
+  SHELL
 
   config.vm.provision "docker", type: "docker"
   config.vm.provision "docker_compose", type: "docker_compose"
 
-  config.vm.provision "devenv", type: "ansible" do |devenv|
-    devenv.playbook = "./ansible/devenv/playbook.yml"
-  end
+  config.vm.provision "pachage", type: "shell", privileged: false, inline: <<-SHELL
+    echo "============================================================="
+    echo "パッケージをインストール"
+    echo "============================================================="
+    sudo apt-add-repository ppa:git-core/ppa
+    sudo apt-get update -y
+    sudo apt-get install -y git
+
+    echo "============================================================="
+    echo "brewをインストール"
+    echo "============================================================="
+    brew install \
+      fzf \
+      tig \
+      exa \
+      fd \
+      ghq \
+      tmux \
+      jq \
+      fd \
+      lazygit
+
+    echo "============================================================="
+    echo "tmuxの設定"
+    echo "============================================================="
+    sudo apt-get install -y xsel
+    if [ -d ~/.tmux/plugins/tpm ]; then
+      echo "tpmがすでにインストールされてる。アップデートする"
+      cd ~/.tmux/plugins/tpm
+      git pull origin master
+    else
+      git clone git@github.com:tmux-plugins/tpm.git 
+    fi
+  SHELL
+
+  config.vm.provision "asdf", type: "shell", privileged: false, inline: <<-SHELL
+    echo "============================================================="
+    echo "asdfをインストール"
+    echo "============================================================="
+    sudo apt-get install -y \
+      automake \
+      autoconf \
+      libreadline-dev \
+      libncurses-dev \
+      libssl-dev \
+      libyaml-dev \
+      libxslt-dev \
+      libffi-dev \
+      libtool \
+      unixodbc-dev \
+      unzip \
+      curl
+    brew install asdf
+
+    echo "============================================================="
+    echo "pythonをインストール"
+    echo "============================================================="
+
+    echo "-------------------------------------------------------------"
+    echo "python pluginのための依存パッケージをインストール"
+    echo "-------------------------------------------------------------"
+    sudo apt-get install -y \
+      libsqlite3-dev \
+      libbz2-dev \
+      libncurses5-dev \
+      libgdbm-dev \
+      liblzma-dev \
+      libssl-dev \
+      tcl-dev \
+      tk-dev \
+      libreadline-dev
+
+    echo "-------------------------------------------------------------"
+    echo "python pluginをインストール"
+    echo "-------------------------------------------------------------"
+    asdf plugin add python
+
+    echo "-------------------------------------------------------------"
+    echo "pythonをインストール"
+    echo "-------------------------------------------------------------"
+    asdf install python 3.8.2
+    asdf install python 2.7.17
+
+    echo "-------------------------------------------------------------"
+    echo "global 設定"
+    echo "-------------------------------------------------------------"
+    asdf global python 3.8.2 2.7.17
+
+    echo "============================================================="
+    echo "nodejsをインストール"
+    echo "============================================================="
+
+    echo "-------------------------------------------------------------"
+    echo "nodejs pluginのための依存パッケージをインストール"
+    echo "-------------------------------------------------------------"
+    sudo apt-get install -y \
+      dirmngr \
+      gpg
+
+    echo "-------------------------------------------------------------"
+    echo "nodejs pluginをインストール"
+    echo "-------------------------------------------------------------"
+    asdf plugin add nodejs
+
+    echo "-------------------------------------------------------------"
+    echo "nodejsをインストール"
+    echo "-------------------------------------------------------------"
+    bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
+    asdf install nodejs 13.9.0
+
+    echo "-------------------------------------------------------------"
+    echo "global 設定"
+    echo "-------------------------------------------------------------"
+    asdf global nodejs 13.9.0
+
+    echo "============================================================="
+    echo "golangをインストール"
+    echo "============================================================="
+
+    echo "-------------------------------------------------------------"
+    echo "golang pluginをインストール"
+    echo "-------------------------------------------------------------"
+    asdf plugin add golang
+
+    echo "-------------------------------------------------------------"
+    echo "golangをインストール"
+    echo "-------------------------------------------------------------"
+    asdf install golang 1.14
+
+    echo "-------------------------------------------------------------"
+    echo "global 設定"
+    echo "-------------------------------------------------------------"
+    asdf global golang 1.14
+  SHELL
+
+  config.vm.provision "lang", type: "shell", privileged: false, inline: <<-SHELL
+    echo "============================================================="
+    echo "rustをインストール"
+    echo "============================================================="
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+  SHELL
+
+  config.vm.provision "neovim", type: "shell", privileged: false, inline: <<-SHELL
+    # pipやnpmを使うものがあるので、言語の後にneovimの設定してる
+    echo "============================================================="
+    echo "neovimをインストール"
+    echo "============================================================="
+    brew install neovim
+
+    echo "============================================================="
+    echo "neovim用の各言語プラグイン"
+    echo "============================================================="
+    pip install neovim
+    npm install neovim
+
+    echo "============================================================="
+    echo "neovimのプラグインマネージャーインストール"
+    echo "============================================================="
+    if [ -f $XDG_DATA_HOME/nvim/site/autoload/plug.vim ]; then
+      echo "plugがすでにインストールされてる"
+    else
+      curl -fLo $XDG_DATA_HOME/nvim/site/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    fi
+  SHELL
+
+  config.vm.provision "lsp", type: "shell", privileged: false, inline: <<-SHELL
+    echo "============================================================="
+    echo "各言語のlspの依存パッケージをインストール"
+    echo "============================================================="
+    npm install yarn
+
+    echo "============================================================="
+    echo "go"
+    echo "============================================================="
+    go get golang.org/x/tools/gopls@latest
+
+    echo "============================================================="
+    echo "rust"
+    echo "============================================================="
+    echo "-------------------------------------------------------------"
+    echo "依存コンポーネントダウンロード"
+    echo "-------------------------------------------------------------"
+    rustup component add rust-src
+    echo "-------------------------------------------------------------"
+    echo "lspのソースダウンロード"
+    echo "-------------------------------------------------------------"
+    git clone https://github.com/rust-analyzer/rust-analyzer.git ~/develop/src/github.com/rust-analyzer/rust-analyzer
+    echo "-------------------------------------------------------------"
+    echo "lspのビルド・インストール"
+    echo "-------------------------------------------------------------"
+    cd ~/develop/src/github.com/rust-analyzer/rust-analyzer
+    cargo xtask install --server
+  SHELL
+
+  config.vm.provision "gcp", type: "shell", privileged: false, inline: <<-SHELL
+    echo "============================================================="
+    echo "google-cloud-sdkをインストール"
+    echo "============================================================="
+
+    echo "-------------------------------------------------------------"
+    echo "依存パッケージをインストール"
+    echo "-------------------------------------------------------------"
+    sudo apt-get install -y \
+      apt-transport-https \
+      ca-certificates \
+      gnupg
+
+    echo "-------------------------------------------------------------"
+    echo "パッケージソース追加"
+    echo "-------------------------------------------------------------"
+    if [ -f /etc/apt/sources.list.d/google-cloud-sdk.list ]; then
+      echo "パッケージソースがすでに追加されてる"
+    else
+      echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+    fi
+
+    echo "-------------------------------------------------------------"
+    echo "公開鍵インポート"
+    echo "-------------------------------------------------------------"
+    if [ -f /usr/share/keyrings/cloud.google.gpg ]; then
+      echo "公開鍵がすでに存在します"
+    else
+      curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+    fi
+
+    echo "-------------------------------------------------------------"
+    echo "インストール"
+    echo "-------------------------------------------------------------"
+    sudo apt-get update && sudo apt-get install -y google-cloud-sdk
+  SHELL
 end
