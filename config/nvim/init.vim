@@ -22,6 +22,9 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'josa42/coc-go', {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-rust-analyzer', {'do': 'yarn install --frozen-lockfile'}
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
 call plug#end()
