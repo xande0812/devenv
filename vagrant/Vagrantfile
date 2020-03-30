@@ -316,6 +316,15 @@ Vagrant.configure("2") do |config|
     echo "-------------------------------------------------------------"
     cd ~/develop/src/github.com/rust-analyzer/rust-analyzer
     cargo xtask install --server
+
+    echo "============================================================="
+    echo "terraform"
+    echo "============================================================="
+    ghq get git@github.com:juliosueiras/terraform-lsp.git
+    cd $(ghq root)/github.com/juliosueiras/terraform-lsp
+    go mod download
+    make
+    mv ./terraform-lsp $GOBIN
   SHELL
 
   config.vm.provision "gcp", type: "shell", privileged: false, inline: <<-SHELL
