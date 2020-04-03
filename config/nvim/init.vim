@@ -25,6 +25,8 @@ Plug 'fannheyward/coc-rust-analyzer', {'do': 'yarn install --frozen-lockfile'}
 Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+Plug 'hashivim/vim-terraform'
+let g:terraform_fmt_on_save=1 "lspはformattingに対応してないみたい
 autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
 
 call plug#end()
