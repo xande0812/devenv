@@ -284,6 +284,7 @@ Vagrant.configure("2") do |config|
     ghq get https://github.com/flutter/flutter.git
     cd $(ghq root)/github.com/flutter/flutter
     git checkout stable
+    flutter precache
   SHELL
 
   config.vm.provision "neovim", type: "shell", privileged: false, inline: <<-SHELL
