@@ -1,6 +1,7 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": ["go"],
+  "coc.preferences.formatOnSaveFiletypes": ["go", "javascript"],
   "tsserver.npm": "/home/vagrant/.asdf/shims/npm",
+  "tsserver.formatOnType": false,
   "languageserver": {
     "golang": {
       "command": "gopls",
