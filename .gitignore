@@ -20,3 +20,5 @@ config/gcloud
 
 .vagrant
 *.log
+
+.DS_Store
