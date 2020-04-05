@@ -312,11 +312,11 @@ Vagrant.configure("2") do |config|
     echo "-------------------------------------------------------------"
     echo "lspのソースダウンロード"
     echo "-------------------------------------------------------------"
-    git clone https://github.com/rust-analyzer/rust-analyzer.git ~/develop/src/github.com/rust-analyzer/rust-analyzer
+    ghq get -u git@github.com:rust-analyzer/rust-analyzer.git
     echo "-------------------------------------------------------------"
     echo "lspのビルド・インストール"
     echo "-------------------------------------------------------------"
-    cd ~/develop/src/github.com/rust-analyzer/rust-analyzer
+    cd $(ghq root)/github.com/rust-analyzer/rust-analyzer
     cargo xtask install --server
 
     echo "============================================================="
