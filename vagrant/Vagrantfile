@@ -327,6 +327,11 @@ Vagrant.configure("2") do |config|
     go mod download
     make
     mv ./terraform-lsp $GOBIN
+
+    echo "============================================================="
+    echo "bash"
+    echo "============================================================="
+    npm install -g bash-language-server
   SHELL
 
   config.vm.provision "gcp", type: "shell", privileged: false, inline: <<-SHELL
