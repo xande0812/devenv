@@ -3,16 +3,6 @@
   "tsserver.npm": "/home/vagrant/.asdf/shims/npm",
   "tsserver.formatOnType": false,
   "languageserver": {
-    "golang": {
-      "command": "gopls",
-      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
-      "disableWorkspaceFolders": true,
-      "filetypes": ["go"],
-      "settings": {
-        "completeUnimported": true,
-        "usePlaceholders": true
-      }
-    },
     "rust": {
       "command": "rust-analyzer",
       "filetypes": ["rust"],
