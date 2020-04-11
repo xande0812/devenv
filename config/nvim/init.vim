@@ -3,12 +3,8 @@ Plug 'tpope/vim-sensible'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts            = 1
-let g:airline_theme                      = 'molokai'
 
 Plug 'morhetz/gruvbox'
-let g:gruvbox_contrast_dark = 'hard'
 
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -16,20 +12,21 @@ Plug 'airblade/vim-gitgutter'
 Plug 'preservim/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'ryanoasis/vim-devicons'
 Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
-nnoremap <silent><C-e> :NERDTreeToggle<CR>
 
 Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/vim-easy-align'
+
+Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 Plug 'josa42/coc-go', {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-rust-analyzer', {'do': 'yarn install --frozen-lockfile'}
-Plug 'yuezk/vim-js'
-Plug 'maxmellon/vim-jsx-pretty'
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
 Plug 'hashivim/vim-terraform'
-let g:terraform_fmt_on_save=1 "lspはformattingに対応してないみたい
-autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
 
 call plug#end()
 
@@ -48,14 +45,58 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 
-" coc用の設定
+" vim-airline/vim-airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts            = 1
+let g:airline_theme                      = 'molokai'
+" vim-airline/vim-airline-----------------
+
+"morhetz/gruvbox
+let g:gruvbox_contrast_dark = 'hard'
+"morhetz/gruvbox--------------------------
+
+" preservim/nerdtree
+nnoremap <silent><C-e> :NERDTreeToggle<CR>
+" preservim/nerdtree---------------------------
+
+" dense-analysis/ale
+let g:ale_fix_on_save      = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_save = 1
+let g:ale_sign_column_always = 1
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚠'
+let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" dense-analysis/ale------------------------------
+"
+" neoclide/coc.nvim
+" TextEdit might fail if hidden is not set.
 set hidden
+
+" Some servers have issues with backup files, see #649.
 set nobackup
 set nowritebackup
+
+" Give more space for displaying messages.
 set cmdheight=2
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
 set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
 set signcolumn=yes
+
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
@@ -85,6 +126,7 @@ endif
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -174,3 +216,15 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+" neoclide/coc.nvim-----------------------------------------
+
+" hashivim/vim-terraform 
+let g:terraform_fmt_on_save=1 "lspはformattingに対応してないみたい
+" hashivim/vim-terraform-----------------------
+
+" junegunn/vim-easy-align
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+" junegunn/vim-easy-align---------------------------
