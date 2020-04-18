@@ -133,7 +133,8 @@ Vagrant.configure("2") do |config|
       fd \
       lazygit \
       terraform \
-      circleci
+      circleci \
+      httpie
 
     echo "============================================================="
     echo "tmuxの設定"
