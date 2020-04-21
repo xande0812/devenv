@@ -1,8 +1,9 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": ["go", "javascript"],
+  "coc.preferences.formatOnSaveFiletypes": ["go", "javascript", "rust"],
   "tsserver.npm": "/home/vagrant/.asdf/shims/npm",
   "tsserver.formatOnType": false,
   "yaml.format.enable": true,
+  "rust-analyzer.serverPath": "/home/vagrant/.cargo/bin/rust-analyzer",
   "yaml.schemas": {
     "http://json.schemastore.org/circleciconfig": ".circleci/*",
     "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/schemas/v3.0/schema.json": ".swagger/*"
