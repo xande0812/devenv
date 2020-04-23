@@ -31,6 +31,8 @@ Plug 'hashivim/vim-terraform'
 Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 
+Plug 'kien/ctrlp.vim'
+
 call plug#end()
 
 let mapleader=";"
@@ -60,6 +62,7 @@ let g:gruvbox_contrast_dark = 'hard'
 
 " preservim/nerdtree
 nnoremap <silent><C-e> :NERDTreeToggle<CR>
+map <leader>r :NERDTreeFind<cr>
 " preservim/nerdtree---------------------------
 
 " dense-analysis/ale
