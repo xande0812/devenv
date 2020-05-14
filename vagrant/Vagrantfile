@@ -489,4 +489,54 @@ Vagrant.configure("2") do |config|
     sudo apt-get update && sudo apt-get install -y google-cloud-sdk
   SHELL
 
+  config.vm.provision "k8s", type: "shell", privileged: false, inline: <<-SHELL
+    echo "============================================================="
+    echo "minikube周り"
+    echo "============================================================="
+    echo "-------------------------------------------------------------"
+    echo "minikubeインストール"
+    echo "-------------------------------------------------------------"
+    if ! type minikube > /dev/null; then
+      echo "minikubeが無いためインストールする"
+      cd /tmp
+      curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \
+        && chmod +x minikube
+      sudo install minikube /usr/local/bin/
+      rm minikube
+    fi
+
+    echo "============================================================="
+    echo "kubectl"
+    echo "============================================================="
+    echo "-------------------------------------------------------------"
+    echo "依存パッケージインストール"
+    echo "-------------------------------------------------------------"
+    sudo apt-get update
+    sudo apt-get install -y apt-transport-https
+
+    echo "-------------------------------------------------------------"
+    echo "公開鍵インポート"
+    echo "-------------------------------------------------------------"
+    if [ -f /usr/share/keyrings/cloud.google.gpg ]; then
+      echo "公開鍵がすでに存在します"
+    else
+      curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+    fi
+
+    echo "-------------------------------------------------------------"
+    echo "パッケージソース追加"
+    echo "-------------------------------------------------------------"
+    if [ -f /etc/apt/sources.list.d/kubernetes.list ]; then
+      echo "パッケージソースがすでに追加されてる"
+    else
+      echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+    fi
+
+    echo "-------------------------------------------------------------"
+    echo "kubectlインストール"
+    echo "-------------------------------------------------------------"
+    sudo apt-get update
+    sudo apt-get install -y kubectl
+  SHELL
+
 end
