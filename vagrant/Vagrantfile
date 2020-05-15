@@ -136,7 +136,8 @@ Vagrant.configure("2") do |config|
       circleci \
       httpie \
       gibo \
-      clang-format
+      clang-format \
+      docker-clean
 
     echo "============================================================="
     echo "tmuxの設定"
