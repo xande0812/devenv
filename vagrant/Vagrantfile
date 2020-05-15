@@ -457,6 +457,12 @@ Vagrant.configure("2") do |config|
     echo "bash"
     echo "============================================================="
     npm install -g bash-language-server
+
+    echo "============================================================="
+    echo "markdown"
+    echo "============================================================="
+    go get -u github.com/mattn/efm-langserver
+    npm install -g markdownlint-cli
   SHELL
 
   config.vm.provision "gcp", type: "shell", privileged: false, inline: <<-SHELL
