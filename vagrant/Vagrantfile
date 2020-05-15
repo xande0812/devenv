@@ -175,7 +175,7 @@ Vagrant.configure("2") do |config|
     fi
     sudo apt update && sudo apt install -y bazel
 
-    EVANS_VERSION=0.8.5
+    EVANS_VERSION=0.9.0
     echo "-------------------------------------------------------------"
     echo "evans version ${RIPGREP_VERSION}"
     echo "-------------------------------------------------------------"
