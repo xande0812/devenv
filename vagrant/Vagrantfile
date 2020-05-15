@@ -383,6 +383,11 @@ Vagrant.configure("2") do |config|
     echo "rustをインストール"
     echo "============================================================="
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+    echo "-------------------------------------------------------------"
+    echo "rust製のコマンド"
+    echo "-------------------------------------------------------------"
+    cargo install du-dust
   SHELL
 
   config.vm.provision "neovim", type: "shell", privileged: false, inline: <<-SHELL
