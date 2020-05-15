@@ -434,14 +434,15 @@ Vagrant.configure("2") do |config|
     echo "-------------------------------------------------------------"
     rustup component add rust-src
     echo "-------------------------------------------------------------"
-    echo "lspのソースダウンロード"
+    echo "lspのインストール"
     echo "-------------------------------------------------------------"
-    ghq get -u git@github.com:rust-analyzer/rust-analyzer.git
-    echo "-------------------------------------------------------------"
-    echo "lspのビルド・インストール"
-    echo "-------------------------------------------------------------"
-    cd $(ghq root)/github.com/rust-analyzer/rust-analyzer
-    cargo xtask install --server
+    if ! type rust-analyzer > /dev/null; then
+      ghq get -u git@github.com:rust-analyzer/rust-analyzer.git
+      cd $(ghq root)/github.com/rust-analyzer/rust-analyzer
+      cargo xtask install --server
+      cd ../..
+      rm -rf rust-analyzer
+    fi
 
     echo "============================================================="
     echo "terraform"
