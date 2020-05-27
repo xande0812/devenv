@@ -592,10 +592,11 @@ Vagrant.configure("2") do |config|
     echo "-------------------------------------------------------------"
     echo "istioctl"
     echo "-------------------------------------------------------------"
+    ISTIOCTL_VERSION=1.6.0
     cd /tmp
-    curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.5.4 sh -
-    sudo install istio-1.5.4/bin/istioctl /usr/local/bin/
-    rm -rf istio-1.5.4
+    curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${ISTIOCTL_VERSION} sh -
+    sudo install istio-${ISTIOCTL_VERSION}/bin/istioctl /usr/local/bin/
+    rm -rf istio-${ISTIOCTL_VERSION}
   SHELL
 
 end
