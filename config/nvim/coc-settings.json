@@ -1,5 +1,15 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": ["go", "javascript", "rust"],
+  "coc.preferences.formatOnSaveFiletypes": [
+      "go",
+      "javascript",
+      "javascriptreact",
+      "rust",
+      "dart",
+      "typescript",
+      "typescriptreact",
+      "python"
+  ],
+  "sql.database": "postgresql",
   "coc.preferences.jumpCommand": "tab drop",
   "tsserver.npm": "/home/vagrant/.asdf/shims/npm",
   "tsserver.formatOnType": false,
@@ -9,7 +19,19 @@
     "http://json.schemastore.org/circleciconfig": ".circleci/*",
     "https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/schemas/v3.0/schema.json": ".swagger/*"
   },
+  "flutter.lsp.initialization.closingLabels": true,
+  "python.formatting.provider": "yapf",
   "languageserver": {
+    "dart": {
+      "command": "dart",
+      "args": [
+        "/home/vagrant/.asdf/installs/dart/2.8.1/dart-sdk/bin/snapshots/analysis_server.dart.snapshot",
+        "--lsp"
+      ],
+      "filetypes": ["dart"],
+      "disableDynamicRegister": true,
+      "trace.server": "verbose"
+    },
     "rust": {
       "command": "rust-analyzer",
       "filetypes": ["rust"],
@@ -25,6 +47,11 @@
       "args": ["start"],
       "filetypes": ["sh"],
       "ignoredRootPaths": ["~"]
+    },
+    "efm": {
+      "command": "efm-langserver",
+      "args": [],
+      "filetypes": ["markdown"]
     }
   }
 }

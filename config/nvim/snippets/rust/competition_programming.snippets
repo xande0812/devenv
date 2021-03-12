@@ -1,0 +1,47 @@
+# 参考: ~/.local/share/nvim/plugged/vim-snippets/snippets/rust.snippets
+snippet read_stdio "標準入力の1行を読み込む"
+	fn read_stdio<T: std::str::FromStr>() -> T {
+	    let mut s = String::new();
+	    std::io::stdin().read_line(&mut s).ok();
+	    s.trim().parse().ok().unwrap()
+	}
+
+snippet read_stdio_to_vec "標準入力の1行を読み込む(スペース区切り)"
+	fn read_stdio_to_vec<T: std::str::FromStr>() -> Vec<T> {
+	    let mut s = String::new();
+	    std::io::stdin().read_line(&mut s).ok();
+	    s.trim()
+	        .split_whitespace()
+	        .map(|e| e.parse().ok().unwrap())
+	        .collect()
+	}
+
+snippet read_stdio_multi_line "標準入力のn行を読み込んでVec<Vec<T>>を返す"
+	fn read_stdio_multi_line<T: std::str::FromStr>(n: u32) -> Vec<Vec<T>> {
+	    let mut v2 = Vec::new();
+	    for _ in 0..n {
+	        let mut s = String::new();
+	        std::io::stdin().read_line(&mut s).ok();
+	        let v = s
+	            .trim()
+	            .split_whitespace()
+	            .map(|e| e.parse().ok().unwrap())
+	            .collect();
+	        v2.push(v);
+	    }
+	    v2
+	}
+
+snippet gcd "最大公約数"
+	fn gcd(a: u64, b: u64) -> u64 {
+	    if b == 0 {
+	        a
+	    } else {
+	        gcd(b, a % b)
+	    }
+	}
+
+snippet gcd_vec "3つ以上の数の最大公約数"
+	fn gcd_vec(vec: &Vec<u64>) -> u64 {
+	    vec.iter().fold(vec[0], |a, b| gcd(a, *b))
+	}

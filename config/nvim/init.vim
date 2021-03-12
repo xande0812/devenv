@@ -23,15 +23,29 @@ Plug 'josa42/coc-go', {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-rust-analyzer', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-snippets', {'do': 'yarn install --frozen-lockfile'}
+Plug 'iamcco/coc-flutter', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile'}
+Plug 'fannheyward/coc-deno', {'do': 'yarn install --frozen-lockfile'}
+Plug 'fannheyward/coc-sql', {'do': 'yarn install --frozen-lockfile'}
 Plug 'honza/vim-snippets'
 Plug 'hashivim/vim-terraform'
 Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'dart-lang/dart-vim-plugin'
 
 Plug 'kien/ctrlp.vim'
+
+Plug 'uarun/vim-protobuf'
+
+Plug 'mattn/emmet-vim'
+
+Plug 'google/vim-maktaba'
+Plug 'google/vim-codefmt'
+Plug 'bazelbuild/vim-bazel'
 
 call plug#end()
 
@@ -79,6 +93,7 @@ let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_linter_aliases = {'typescriptreact': 'typescript', 'typescript.tsx': 'typescript'}
 " dense-analysis/ale------------------------------
 "
 " neoclide/coc.nvim
@@ -251,3 +266,9 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 " junegunn/vim-easy-align---------------------------
+
+" bazelbuild/vim-bazel
+augroup autoformat_settings
+  autocmd FileType bzl AutoFormatBuffer buildifier
+augroup END
+" bazelbuild/vim-bazel-------------------------------------------

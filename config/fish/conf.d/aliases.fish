@@ -6,6 +6,5 @@ alias d='docker'
 alias dc='docker-compose'
 
 alias ls='exa -ahl --git'
-alias tree='exa -T --git-ignore'
 
 alias lg='lazygit'
