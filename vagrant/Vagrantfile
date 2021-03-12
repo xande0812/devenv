@@ -2,7 +2,7 @@
 Vagrant.configure("2") do |config|
   config.vm.box         = "ubuntu/bionic64"
   config.vm.box_version = "20200218.0.0"
-  config.disksize.size = '50GB'
+  config.disksize.size = '60GB'
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -14,6 +14,11 @@ Vagrant.configure("2") do |config|
   # within the machine from a port on the host machine and only allow access
   # via 127.0.0.1 to disable public access
   # config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 8081, host: 8081, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 4000, host: 4000, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 9099, host: 9099, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 9001, host: 9001, host_ip: "127.0.0.1"
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -52,6 +57,7 @@ Vagrant.configure("2") do |config|
     echo "============================================================="
     sudo apt-get install -y language-pack-ja-base language-pack-ja ibus-mozc
     sudo timedatectl set-timezone Asia/Tokyo
+    sudo systemctl enable systemd-timesyncd.service
 
     echo "============================================================="
     echo "fishインストール"
@@ -109,7 +115,7 @@ Vagrant.configure("2") do |config|
   SHELL
 
   config.vm.provision "docker", type: "docker"
-  config.vm.provision "docker_compose", type: "docker_compose"
+  config.vm.provision "docker_compose", type: "docker_compose", compose_version: "1.28.2"
 
   config.vm.provision "packages", type: "shell", privileged: false, inline: <<-SHELL
     echo "============================================================="
@@ -117,7 +123,7 @@ Vagrant.configure("2") do |config|
     echo "============================================================="
     sudo apt-add-repository ppa:git-core/ppa
     sudo apt-get update -y
-    sudo apt-get install -y git
+    sudo apt-get install -y git tree
 
     echo "============================================================="
     echo "brewをインストール"
@@ -137,7 +143,8 @@ Vagrant.configure("2") do |config|
       httpie \
       gibo \
       clang-format \
-      docker-clean
+      docker-clean \
+      fx
 
     echo "============================================================="
     echo "tmuxの設定"
@@ -181,6 +188,11 @@ Vagrant.configure("2") do |config|
     echo "-------------------------------------------------------------"
     cd /usr/bin
     curl -L https://github.com/ktr0731/evans/releases/download/${EVANS_VERSION}/evans_linux_amd64.tar.gz | sudo tar zxv
+
+    echo "-------------------------------------------------------------"
+    echo "serverless"
+    echo "-------------------------------------------------------------"
+    curl -o- -L https://slss.io/install | bash
   SHELL
 
   config.vm.provision "asdf", type: "shell", privileged: false, inline: <<-SHELL
@@ -257,7 +269,9 @@ Vagrant.configure("2") do |config|
     echo "-------------------------------------------------------------"
     bash ~/.asdf/plugins/nodejs/bin/import-release-team-keyring
     asdf install nodejs 13.9.0
+    asdf install nodejs 12.14.0
     asdf install nodejs 10.16.0
+    asdf install nodejs 10.21.0
 
     echo "-------------------------------------------------------------"
     echo "global 設定"
@@ -276,17 +290,19 @@ Vagrant.configure("2") do |config|
     echo "-------------------------------------------------------------"
     echo "golangをインストール"
     echo "-------------------------------------------------------------"
-    asdf install golang 1.14.2
+    asdf install golang 1.14.4
+    asdf install golang 1.15.5
 
     echo "-------------------------------------------------------------"
     echo "global 設定"
     echo "-------------------------------------------------------------"
-    asdf global golang 1.14.2
+    asdf global golang 1.15.5
 
     echo "-------------------------------------------------------------"
     echo "go製のツールインストール"
     echo "-------------------------------------------------------------"
-    go get -u github.com/google/gops
+    go get -u github.com/google/gops \
+        github.com/bazelbuild/buildtools/buildifier
 
     echo "============================================================="
     echo "rubyをインストール"
@@ -376,6 +392,29 @@ Vagrant.configure("2") do |config|
     echo "global 設定"
     echo "-------------------------------------------------------------"
     asdf global dart 2.8.1
+
+    echo "============================================================="
+    echo "denoをインストール"
+    echo "============================================================="
+    sudo apt-get install -y \
+      unzip \
+      git \
+      curl
+
+    echo "-------------------------------------------------------------"
+    echo "deno pluginをインストール"
+    echo "-------------------------------------------------------------"
+    asdf plugin-add deno https://github.com/asdf-community/asdf-deno.git
+
+    echo "-------------------------------------------------------------"
+    echo "denoをインストール"
+    echo "-------------------------------------------------------------"
+    asdf install deno 1.1.3
+
+    echo "-------------------------------------------------------------"
+    echo "deno 設定"
+    echo "-------------------------------------------------------------"
+    asdf global deno 1.1.3
   SHELL
 
   config.vm.provision "lang", type: "shell", privileged: false, inline: <<-SHELL
@@ -424,7 +463,8 @@ Vagrant.configure("2") do |config|
     echo "go"
     echo "============================================================="
     go get -u golang.org/x/tools/...
-    curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.24.0
+    go get -u github.com/ramya-rao-a/go-outline
+    curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.35.2
 
     echo "============================================================="
     echo "rust"
@@ -467,6 +507,11 @@ Vagrant.configure("2") do |config|
     echo "============================================================="
     go get -u github.com/mattn/efm-langserver
     npm install -g markdownlint-cli
+
+    echo "============================================================="
+    echo "python"
+    echo "============================================================="
+    pip install 'python-language-server[all]'
   SHELL
 
   config.vm.provision "gcp", type: "shell", privileged: false, inline: <<-SHELL
@@ -504,6 +549,21 @@ Vagrant.configure("2") do |config|
     echo "インストール"
     echo "-------------------------------------------------------------"
     sudo apt-get update && sudo apt-get install -y google-cloud-sdk
+  SHELL
+
+  config.vm.provision "aws", type: "shell", privileged: false, inline: <<-SHELL
+    echo "============================================================="
+    echo "aws-cli-v2をインストール"
+    echo "============================================================="
+
+    echo "-------------------------------------------------------------"
+    echo "インストール"
+    echo "-------------------------------------------------------------"
+    sudo apt-get install -y unzip
+    cd /tmp
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
   SHELL
 
   config.vm.provision "k8s", type: "shell", privileged: false, inline: <<-SHELL
@@ -595,8 +655,36 @@ Vagrant.configure("2") do |config|
     ISTIOCTL_VERSION=1.6.0
     cd /tmp
     curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${ISTIOCTL_VERSION} sh -
-    sudo install istio-${ISTIOCTL_VERSION}/bin/istioctl /usr/local/bin/
+    sudo install istio-${ISTIOCTL_VERSION}/bin/istioctl /usr/local/bin
     rm -rf istio-${ISTIOCTL_VERSION}
+
+    echo "-------------------------------------------------------------"
+    echo "velero"
+    echo "-------------------------------------------------------------"
+    VELERO_VERSION=1.4.0
+    cd /tmp
+    curl -L https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero-v${VELERO_VERSION}-linux-amd64.tar.gz | tar zxv
+    sudo install velero-v${VELERO_VERSION}-linux-amd64/velero /usr/local/bin
+
+    echo "-------------------------------------------------------------"
+    echo "krew"
+    echo "-------------------------------------------------------------"
+    (
+      set -x; cd "$(mktemp -d)" &&
+      curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz" &&
+      tar zxvf krew.tar.gz &&
+      KREW=./krew-"$(uname | tr '[:upper:]' '[:lower:]')_$(uname -m | sed -e 's/x86_64/amd64/' -e 's/arm.*$/arm/')" &&
+      "$KREW" install krew
+    )
+    mkdir -p ~/.krew/bin
+
+    echo "-------------------------------------------------------------"
+    echo "k8s plugins"
+    echo "-------------------------------------------------------------"
+    kubectl krew install ctx
+    kubectl krew install ns
+    kubectl krew install tail
+    kubectl krew install tree
   SHELL
 
 end
