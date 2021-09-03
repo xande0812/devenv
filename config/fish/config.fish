@@ -16,5 +16,5 @@ set -g theme_display_hostname no
 functions --copy cd standard_cd
 
 function cd
-  standard_cd $argv; and ls
+  standard_cd $argv; and ll
 end
