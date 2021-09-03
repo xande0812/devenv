@@ -21,13 +21,13 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'josa42/coc-go', {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-rust-analyzer', {'do': 'yarn install --frozen-lockfile'}
+Plug 'iamcco/coc-tailwindcss',  {'do': 'yarn install --frozen-lockfile && yarn run build'}
 Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-yaml', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-snippets', {'do': 'yarn install --frozen-lockfile'}
 Plug 'iamcco/coc-flutter', {'do': 'yarn install --frozen-lockfile'}
 Plug 'neoclide/coc-python', {'do': 'yarn install --frozen-lockfile'}
-Plug 'fannheyward/coc-deno', {'do': 'yarn install --frozen-lockfile'}
 Plug 'fannheyward/coc-sql', {'do': 'yarn install --frozen-lockfile'}
 Plug 'honza/vim-snippets'
 Plug 'hashivim/vim-terraform'
@@ -46,6 +46,8 @@ Plug 'mattn/emmet-vim'
 Plug 'google/vim-maktaba'
 Plug 'google/vim-codefmt'
 Plug 'bazelbuild/vim-bazel'
+
+Plug 'jparise/vim-graphql'
 
 call plug#end()
 
