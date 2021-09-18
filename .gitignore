@@ -13,6 +13,7 @@ config/configstore
 
 config/fish/conf.d/fzf.fish
 config/fish/conf.d/fzf_key_bindings.fish
+config/fish/conf.d/ghq_key_bindings.fish
 
 config/gatsby
 
